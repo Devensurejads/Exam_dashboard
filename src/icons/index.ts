@@ -1,6 +1,6 @@
 import { ReactComponent as GridIcon } from "./grid.svg?react";
 import { ReactComponent as GroupIcon } from "./Users.svg?react";
-import { ReactComponent as FileIcon } from "./File_Document.svg?react";
+import { ReactComponent as FileIcon } from "./file_document.svg?react";
 import { ReactComponent as BookIcon } from "./book.svg?react";
 import { ReactComponent as CapIcon } from "./degree-cap.svg?react";
 import { ReactComponent as ChartIcon } from "./chart.svg?react";
