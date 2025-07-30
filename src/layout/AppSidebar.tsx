@@ -3,11 +3,11 @@ import { Link, useLocation } from "react-router-dom"; // ✅ CORRECT IMPORT
 
 import {
   BookIcon,
-  CalendarIcon,
+  // CalendarIcon,
   CapIcon,
-  ChartIcon,
+  // ChartIcon,
   FileIcon,
-  GraphIcon,
+  // GraphIcon,
   GridIcon,
   GroupIcon,
 } from "../icons";
