@@ -19,6 +19,24 @@ import { ReactComponent as WarningIcon } from "./warning.svg?react";
 import { ReactComponent as FileUploadIcon } from "./file-icon.svg?react";
 import { ReactComponent as PauseIcon } from "./pause.svg?react";
 import { ReactComponent as DotsIcon } from "./dots.svg?react";
+import { ReactComponent as SetingsIcon } from "./settings.svg?react";
+import { ReactComponent as MonitorIcon } from "./monitor.svg?react";
+import { ReactComponent as ServerIcon } from "./server.svg?react";
+import { ReactComponent as HeartBeatIcon } from "./heartbeat.svg?react";
+import { ReactComponent as DatabaseIcon } from "./database.svg?react";
+import { ReactComponent as EyeFullIcon } from "./eye-full.svg?react";
+import { ReactComponent as LinkIcon } from "./Link.svg?react";
+import { ReactComponent as RefreshIcon } from "./refresh.svg?react";
+import { ReactComponent as LayoutIcon } from "./layout.svg?react";
+import { ReactComponent as TextIcon } from "./text.svg?react";
+import { ReactComponent as ChatIcon } from "./chat.svg?react";
+import { ReactComponent as SparkIcon } from "./spark.svg?react";
+import { ReactComponent as RightIcon } from "./right-arrow.svg?react";
+import { ReactComponent as GoalIcon } from "./goal.svg?react";
+import { ReactComponent as InfoIcon } from "./info-icon.svg?react";
+import { ReactComponent as CrossIcon } from "./cross.svg?react";
+import { ReactComponent as CupIcon } from "./cup-icon.svg?react";
+import { ReactComponent as AwardIcon } from "./award.svg?react";
 
 
 export {
@@ -42,5 +60,23 @@ export {
   WarningIcon,
   FileUploadIcon,
   PauseIcon,
-  DotsIcon
+  DotsIcon,
+  SetingsIcon,
+  MonitorIcon,
+  ServerIcon,
+  HeartBeatIcon,
+  DatabaseIcon,
+  EyeFullIcon,
+  LinkIcon,
+  RefreshIcon,
+  LayoutIcon,
+  TextIcon,
+  ChatIcon,
+  SparkIcon,
+  RightIcon,
+  GoalIcon,
+  InfoIcon,
+  CrossIcon,
+  CupIcon,
+  AwardIcon
 };

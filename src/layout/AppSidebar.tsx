@@ -3,13 +3,18 @@ import { Link, useLocation } from "react-router-dom"; // ✅ CORRECT IMPORT
 
 import {
   BookIcon,
+  CalendarIcon,
   // CalendarIcon,
   CapIcon,
+  ChatIcon,
   // ChartIcon,
   FileIcon,
+  GraphIcon,
   // GraphIcon,
   GridIcon,
   GroupIcon,
+  MonitorIcon,
+  SetingsIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -24,7 +29,15 @@ const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation(); // ✅ CORRECT HOOK
 
-  const mainNavItems: NavItem[] = [
+  // Get user role from localStorage
+  const [userRole, setUserRole] = useState<string>('faculty');
+
+  useEffect(() => {
+    const role = localStorage.getItem('role') || 'faculty';
+    setUserRole(role);
+  }, []);
+
+  const facultyNavItems: NavItem[] = [
     {
       icon: <GridIcon />,
       name: "Dashboard",
@@ -45,22 +58,83 @@ const AppSidebar: React.FC = () => {
       name: "Grading",
       path: "/grading",
     },
-    // {
-    //   icon: <GraphIcon />,
-    //   name: "Analytics & Reports",
-    //   path: "/analytics-reports",
-    // },
     {
       icon: <GroupIcon />,
       name: "Student Management",
       path: "/student-management",
     },
-    // {
-    //   icon: <CalendarIcon />,
-    //   name: "Academic Calendar",
-    //   path: "/academic-calendar",
-    // },
   ];
+
+  const adminNavItems: NavItem[] = [
+    {
+      icon: <GridIcon />,
+      name: "Dashboard",
+      path: "/admin-dashboard",
+    },
+    {
+      icon: <GraphIcon />,
+      name: "Analytics",
+      path: "/analytics",
+    },
+    {
+      icon: <FileIcon />,
+      name: "Audit Log",
+      path: "/audit-log",
+    },
+    {
+      icon: <BookIcon />,
+      name: "Knowledge Base",
+      path: "/knowledge-base",
+    },
+    {
+      icon: <SetingsIcon />,
+      name: "Paper Format",
+      path: "/paper-format",
+    },
+    {
+      icon: <MonitorIcon />,
+      name: "System Format",
+      path: "/system-format",
+    },
+  ];
+
+
+  const StudentNavItems: NavItem[] = [
+    {
+      icon: <GridIcon />,
+      name: "Dashboard",
+      path: "/student-dashboard",
+    },
+    {
+      icon: <CalendarIcon />,
+      name: "Upcoming Exams",
+      path: "/upcoming-exams",
+    },
+    {
+      icon: <BookIcon />,
+      name: "All Exams",
+      path: "/exams",
+    },
+    {
+      icon: <GraphIcon />,
+      name: "Result & Analytics",
+      path: "/result-analytics",
+    },
+    {
+      icon: <ChatIcon />,
+      name: "AI Study Assistant",
+      path: "/ai-assistant",
+    }
+  ];
+
+  const navMap = {
+    Admin: adminNavItems,
+    Faculty: facultyNavItems,
+    Student: StudentNavItems
+  };
+
+  const currentNavItems = navMap[userRole as keyof typeof navMap] || [];
+
 
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main" | "settings" | "others";
@@ -78,7 +152,7 @@ const AppSidebar: React.FC = () => {
   useEffect(() => {
     let submenuMatched = false;
 
-    mainNavItems.forEach((nav, index) => {
+    currentNavItems.forEach((nav, index) => {
       if (nav.subItems) {
         nav.subItems.forEach((subItem) => {
           if (isActive(subItem.path)) {
@@ -95,7 +169,7 @@ const AppSidebar: React.FC = () => {
     if (!submenuMatched) {
       setOpenSubmenu(null);
     }
-  }, [location, isActive, mainNavItems]);
+  }, [location, isActive, currentNavItems]);
 
   useEffect(() => {
     if (openSubmenu !== null) {
@@ -130,20 +204,17 @@ const AppSidebar: React.FC = () => {
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
-              className={`menu-item group ${
-                openSubmenu?.type === menuType && openSubmenu?.index === index
+              className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index
                   ? "menu-item-active"
                   : "menu-item-inactive"
-              } cursor-pointer ${
-                !isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"
-              }`}
+                } cursor-pointer ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"
+                }`}
             >
               <span
-                className={`menu-item-icon-size ${
-                  openSubmenu?.type === menuType && openSubmenu?.index === index
+                className={`menu-item-icon-size ${openSubmenu?.type === menuType && openSubmenu?.index === index
                     ? "menu-item-icon-active"
                     : "menu-item-icon-inactive"
-                }`}
+                  }`}
               >
                 {nav.icon}
               </span>
@@ -155,18 +226,16 @@ const AppSidebar: React.FC = () => {
             nav.path && (
               <Link
                 to={nav.path}
-                className={`menu-item group ${
-                  isActive(nav.path)
+                className={`menu-item group ${isActive(nav.path)
                     ? "menu-item-active"
                     : "menu-item-inactive"
-                }`}
+                  }`}
               >
                 <span
-                  className={`menu-item-icon-size ${
-                    isActive(nav.path)
+                  className={`menu-item-icon-size ${isActive(nav.path)
                       ? "menu-item-icon-active"
                       : "menu-item-icon-inactive"
-                  }`}
+                    }`}
                 >
                   {nav.icon}
                 </span>
@@ -186,7 +255,7 @@ const AppSidebar: React.FC = () => {
               style={{
                 height:
                   openSubmenu?.type === menuType &&
-                  openSubmenu?.index === index
+                    openSubmenu?.index === index
                     ? `${subMenuHeight[`${menuType}-${index}`]}px`
                     : "0px",
               }}
@@ -196,32 +265,29 @@ const AppSidebar: React.FC = () => {
                   <li key={subItem.name}>
                     <Link
                       to={subItem.path}
-                      className={`menu-dropdown-item ${
-                        isActive(subItem.path)
+                      className={`menu-dropdown-item ${isActive(subItem.path)
                           ? "menu-dropdown-item-active"
                           : "menu-dropdown-item-inactive"
-                      }`}
+                        }`}
                     >
                       {subItem.name}
                       <span className="flex items-center gap-1 ml-auto">
                         {subItem.new && (
                           <span
-                            className={`ml-auto ${
-                              isActive(subItem.path)
+                            className={`ml-auto ${isActive(subItem.path)
                                 ? "menu-dropdown-badge-active"
                                 : "menu-dropdown-badge-inactive"
-                            } menu-dropdown-badge`}
+                              } menu-dropdown-badge`}
                           >
                             new
                           </span>
                         )}
                         {subItem.pro && (
                           <span
-                            className={`ml-auto ${
-                              isActive(subItem.path)
+                            className={`ml-auto ${isActive(subItem.path)
                                 ? "menu-dropdown-badge-active"
                                 : "menu-dropdown-badge-inactive"
-                            } menu-dropdown-badge`}
+                              } menu-dropdown-badge`}
                           >
                             pro
                           </span>
@@ -241,10 +307,9 @@ const AppSidebar: React.FC = () => {
   return (
     <aside
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
-        ${
-          isExpanded || isMobileOpen
-            ? "w-[240px]"
-            : isHovered
+        ${isExpanded || isMobileOpen
+          ? "w-[240px]"
+          : isHovered
             ? "w-[240px]"
             : "w-[90px]"
         }
@@ -254,9 +319,8 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-        }`}
+        className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+          }`}
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
@@ -289,7 +353,7 @@ const AppSidebar: React.FC = () => {
       <div className="flex flex-col flex-grow overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6 flex-grow">
           <div className="flex flex-col gap-4">
-            <div>{renderMenuItems(mainNavItems, "main")}</div>
+            <div>{renderMenuItems(currentNavItems, "main")}</div>
           </div>
         </nav>
       </div>
